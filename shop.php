@@ -35,12 +35,36 @@
         
     <div class="col-md-9">    
         <div class="row"><!-- row Begin -->
+
+            <div id='product_loading'></div>
+
+            <!-- Price Slider -->
+            <script>  
+            $(document).ready(function(){  
+                $('#min_price').change(function(){  
+                    var price = $(this).val();  
+                    $("#price_range").text("Product under Price: $" + price);  
+                    $.ajax({  
+                            url:"load_product.php",  
+                            method:"POST",  
+                            data:{price:price},  
+                            success:function(data){  
+                                $("#product_loading").fadeIn(500).html(data);  
+                            }  
+                    });  
+                });  
+            });  
+            </script>  
                        
             <?php
                    
                 if(!isset($_GET['device'])){
                        
                     if(!isset($_GET['types'])){
+
+                        if(!isset($_GET['search'])){
+
+                            if(!isset($_POST["price"])){
                            
                         $per_page=6;
                            
@@ -62,6 +86,7 @@
                                    
                                 $pro_id = $row_products['product_id'];
                                 $pro_title = $row_products['product_title'];
+                                $pro_url = $row_products['product_url'];
                                 $pro_price = $row_products['product_price'];
                                 $pro_img1 = $row_products['product_image1'];
                                    
@@ -70,19 +95,19 @@
                                 <div class='col-md-4 col-md-6 center-responsive'>
                                     <div class='product'>
                                        
-                                        <a href = 'details.php?product_id=$pro_id'>
+                                        <a href = '$pro_url'>
                                             <img class='img-responsive' src='images/Product-Images/$pro_img1'></a>
                                             
                                             <div class='text'>
                                             
-                                                <h3><a href='details.php?product_id=$pro_id'> $pro_title </a></h3>
+                                                <h3><a href='$pro_url'> $pro_title </a></h3>
                                                 
                                                 <p class='price'>$ $pro_price</p>
                                                 <p class='button'>
                                                 
-                                                    <a class='btn btn-default' href = 'details.php?product_id=$pro_id'>View Details</a>
+                                                    <a class='btn btn-default' href = '$pro_url'>View Details</a>
                                                     
-                                                    <a class='btn btn-primary' href = 'cart.php?product_id=$pro_id'> 
+                                                    <a class='btn btn-primary' href = 'details.php?product_id=$pro_id'> 
                                                     
                                                         <i class='fa fa-shopping-cart'></i> Add To Cart</a>
                                                     
@@ -98,7 +123,8 @@
             
         </div>
 
-        <center>
+            <center>
+
                 <ul class="pagination"><!-- pagination begin -->
                        
                     <?php
@@ -134,14 +160,18 @@
                                 ";
                             }
                         }
-                    ?>
+                    }
+                }
+                ?>
                     
                 </ul><!-- pagination finish -->
-            </center>
+            
+            <center>
+            
         </div>
         
         <?php
-        
+            searchPro();
             getCatDevice();
             getCatType();
         ?>

@@ -3,6 +3,54 @@
     include 'navigation/header.php';
 ?>
 
+<?php
+
+    $product_id = $_GET['product_id'];
+    
+    $get_product = "select * from product where product_url='$product_id'";
+    
+    $run_product = mysqli_query($con,$get_product);
+
+    $check_product = mysqli_num_rows($run_product);
+    
+    $row_products = mysqli_fetch_array($run_product);
+    
+    $device_id = $row_products['device_id'];
+
+    $type_id = $row_products['type_id'];
+    
+    $pro_title = $row_products['product_title'];
+
+    $pro_url = $row_products['product_url'];
+    
+    $pro_price = $row_products['product_price'];
+    
+    $pro_desc = $row_products['product_desc'];
+    
+    $pro_img1 = $row_products['product_image1'];
+    
+    $pro_img2 = $row_products['product_image2'];
+    
+    $pro_img3 = $row_products['product_image3'];
+
+    $get_device = "select * from by_device where device_id='$device_id'";
+    
+    $run_device = mysqli_query($con,$get_device);
+    
+    $row_device = mysqli_fetch_array($run_device);
+    
+    $device_title = $row_device['device_title'];
+
+    $get_type = "select * from by_type where type_id='$type_id'";
+    
+    $run_type = mysqli_query($con,$get_type);
+    
+    $row_type = mysqli_fetch_array($run_type);
+    
+    $type_title = $row_type['type_title'];
+
+?>
+
 <div id="content">
 
     <div class="container">
@@ -20,7 +68,7 @@
                     <a href="shop.php?device=<?php echo $device_id; ?>"><?php echo $device_title; ?></a>
                 </li>
                 <li>
-                    <?php echo $product_title; ?>
+                    <?php echo $pro_title; ?>
                 </li>
 
             </ul><!-- breadcrumb Finish -->
@@ -40,18 +88,18 @@
         <div class="col-md-9"><!-- col-md-9 Begin -->
                <div id="productMain" class="row"><!-- row Begin -->
                    <div class="col-sm-9"><!-- col-sm-6 Begin -->
-                       <h1 class="text-center"><?php echo $product_title; ?></h1>
+                       <h1 class="text-center"><?php echo $pro_title; ?></h1>
                        <div id="mainImage"><!-- #mainImage Begin -->
                            <div id="myCarousel" class="carousel slide" data-ride="carousel"><!-- carousel slide Begin -->
                                <div class="carousel-inner">
                                    <div class="item active">
-                                       <center><img class="img-responsive" src="images/Product-Images/<?php echo $product_img1; ?>" alt="Product 3-a"></center>
+                                       <img class="img-responsive" src="images/Product-Images/<?php echo $pro_img1; ?>" alt="Product 3-a">
                                    </div>
                                    <div class="item">
-                                       <center><img class="img-responsive" src="images/Product-Images/<?php echo $product_img2; ?>" alt="Product 3-b"></center>
+                                       <img class="img-responsive" src="images/Product-Images/<?php echo $pro_img2; ?>" alt="Product 3-b">
                                    </div>
                                    <div class="item">
-                                       <center><img class="img-responsive" src="images/Product-Images/<?php echo $product_img3; ?>" alt="Product 3-c"></center>
+                                       <img class="img-responsive" src="images/Product-Images/<?php echo $pro_img3; ?>" alt="Product 3-c">
                                    </div>
                                </div>
                                
@@ -68,22 +116,52 @@
                                
                                <a href="#myCarousel" class="right carousel-control" data-slide="next"><!-- right carousel-control Begin -->
                                    <span class="glyphicon glyphicon-chevron-right"></span>
-                                   <span class="sr-only">Previous</span>
+                                   <span class="sr-only">Next</span>
                                </a><!-- right carousel-control Finish -->
                                
                            </div><!-- carousel slide Finish -->
                        </div><!-- mainImage Finish -->
                    </div><!-- col-sm-6 Finish -->
                    
-                   <div class="col-sm-4"><!-- col-sm-6 Begin -->
+                   <div class="col-sm-6"><!-- col-sm-6 Begin -->
                        <div class="box-details"><!-- box Begin -->
 
-                           <form action="cart.php?<?php echo "product_id=$product_id"; ?>" class="form-horizontal" method="post"><!-- form-horizontal Begin -->
+                           <?php add_cart(); ?>
+
+                           
+                           
+                           <form action="details.php?add_cart=<?php echo $pro_url; ?>" class="form-horizontal" method="post"><!-- form-horizontal Begin -->
                                
-                               <p class="price">$ <?php echo $product_price; ?></p>
+                           <div class="form-group">
+                                    <label class="col-md-5 control-label">Share Product</label>
+
+                                    <div class="col-md-7">
+                                        <p class="social">
+                                            <a href="#" class="fa fa-facebook"></a>
+                                            <a href="#" class="fa fa-twitter"></a>
+                                            <a href="#" class="fa fa-instagram"></a>
+                                            <a href="#" class="fa fa-google-plus"></a>
+                                        </p>
+                                    </div>
+                                </div>
+
+                               <div class="form-group">
+                                    <label class="col-md-5 control-label">Products Quantity</label>
+
+                                    <div class="col-md-7">
+                                        <select name="product_qty" id="" class="form-control">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                               <p class="price">$ <?php echo $pro_price; ?></p>
                                
-                               <p class="text-center buttons"><button class="btn btn-primary i fa fa-shopping-cart"> Add to cart</button></p>
-                               
+                               <p class="text-center buttons"><button class="btn btn-primary i fa fa-shopping-cart"> Add to cart</button></p>   
+
                            </form><!-- form-horizontal Finish -->
                            
                        </div><!-- box Finish -->
@@ -99,6 +177,52 @@
                         <h3 class="text-center">You May Also Need</h3>
                 
                     </div><!-- box same-height headline Finish -->
+
+                    <?php 
+                   
+                    $get_products = "select * from product order by rand() LIMIT 0,4";
+                   
+                    $run_products = mysqli_query($con,$get_products);
+                   
+                    while($row_products=mysqli_fetch_array($run_products)){
+                       
+                       $pro_id = $row_products['product_id'];
+                       
+                       $pro_title = $row_products['product_title'];
+
+                       $pro_url = $row_products['product_url'];
+                       
+                       $pro_price = $row_products['product_price'];
+                       
+                       $pro_img1 = $row_products['product_image1'];
+
+                       $pro_img2 = $row_products['product_image2'];
+
+                       $pro_img2 = $row_products['product_image3'];
+                       
+                       echo "
+                       
+                        <div class='col-md-3 col-sm-6 center-responsive'><!-- col-md-3 col-sm-6 center-responsive Begin -->
+                        <div class='product same-height'><!-- product same-height Begin -->
+                            <a href='$pro_url'>
+                                <img class='img-responsive' src='images/Product-Images/$pro_img1' alt='Product 6'>
+                                </a>
+                                
+                                <div class='text'><!-- text Begin -->
+                                    <h3><a href='$pro_url'> $pro_title </a></h3>
+                                    
+                                    <p class='price'>$$pro_price</p>
+                                    
+                                </div><!-- text Finish -->
+                                
+                            </div><!-- product same-height Finish -->
+                        </div><!-- col-md-3 col-sm-6 center-responsive Finish -->
+                   
+                       ";
+                       
+                    }
+                   
+                   ?>
 
                </div><!-- #row same-heigh-row Finish -->
                

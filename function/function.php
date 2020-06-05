@@ -2,6 +2,64 @@
     include ("db/db.php");
 
 
+    //Begin getRealIpUser function
+    function getRealIpUser(){
+        switch(true){
+            case(!empty($_SERVER['HTTP_X_REAL_IP'])) : return $_SERVER['HTTP_X_REAL_IP'];
+            case(!empty($_SERVER['HTTP_CLIENT_IP'])) : return $_SERVER['HTTP_CLIENT_IP'];
+            case(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) : return $_SERVER['HTTP_X_FORWARDED_FOR'];
+            
+            default : return $_SERVER['REMOTE_ADDR'];
+
+        }
+    }
+    //Finish getRealIpUser function
+
+    //Begin add_cart function
+    
+    function add_cart(){
+        
+        global $con;
+
+        if(isset($_GET['add_cart'])){
+
+            $ip_add = getRealIpUser();
+
+            $p_id = $_GET['add_cart'];
+
+            $product_qty = $_POST['product_qty'];
+
+            $check_product = "select * from cart where ip_add='$ip_add' AND p_id='$p_id'";
+
+            $run_check = mysqli_query($con,$check_product);
+
+            if(mysqli_num_rows($run_check)>0){
+                
+                echo "<script>alert('$pro_id')</script>";
+                
+                echo "<script>window.open('details.php?product_id=$p_id','_self')</script>";
+            
+            }else{
+
+                $get_price ="select * from product where product_url='$p_id'";
+
+                $run_price = mysqli_query($con,$get_price);
+
+                $row_price = mysqli_fetch_array($run_price);
+
+                $pro_price = $row_price['product_price'];
+                
+                $query = "INSERT INTO cart (p_id, ip_add, qty) VALUES ('$p_id','$ip_add','$product_qty')";
+
+                $run_query = mysqli_query($con,$query);
+
+                echo "<script>window.open('cart.php?product_id=$p_id','_self')</script>";
+            }
+        }
+    }
+    
+    //Finish add_cart function
+
     //Begin, Make Category Dynamically
     function getDevices(){
         
@@ -73,6 +131,8 @@
 
             $product_title = $row_pro['product_title'];
 
+            $product_url = $row_pro['product_url'];
+
             $product_price = $row_pro['product_price'];
 
             $product_image = $row_pro['product_image1'];
@@ -83,17 +143,17 @@
         
                 <div class='product'>
 
-                    <a href='details.php?product_id=$product_id'><img class='img-responsive' src='images/Product-Images/$product_image'></a>
+                    <a href='$product_url'><img class='img-responsive' src='images/Product-Images/$product_image'></a>
 
                     <div class='text'>
 
-                        <h3><a href='details.php?product_id=$product_id'>$product_title</a></h3>
+                        <h3><a href='$product_url'>$product_title</a></h3>
 
                         <p class='price'>$ $product_price</p>
 
-                        <p class='button'><a class='btn btn-default' href='details.php?product_id=$product_id'>View Details</a>
+                        <p class='button'><a class='btn btn-default' href='$product_url'>View Details</a>
 
-                            <a class='btn btn-primary' href='cart.php'><i class='fa fa-shopping-cart'></i> Add to Cart</a>
+                            <a class='btn btn-primary' href='$product_url'><i class='fa fa-shopping-cart'></i> Add to Cart</a>
 
                         </p>
 
@@ -140,6 +200,8 @@
                 $product_id = $row_products['product_id'];
             
                 $product_title = $row_products['product_title'];
+
+                $product_url = $row_products['product_url'];
             
                 $product_price = $row_products['product_price'];
                 
@@ -153,7 +215,7 @@
 
                     <div class='product'>
 
-                        <a href='details.php?product_id=$product_id'>
+                        <a href='$product_url'>
 
                             <img class='img-responsive' src='images/Product-Images/$product_img1'>
 
@@ -161,11 +223,11 @@
 
                         <div class='text'>
 
-                            <h3><a href='details.php?product_id=$product_id'>$product_title</a></h3>
+                            <h3><a href='$product_url'>$product_title</a></h3>
 
                             <p class='price'>$ $product_price</p>
 
-                            <p class='button'><a class='btn btn-default' href='details.php?product_id=$product_id'>View Details</a>
+                            <p class='button'><a class='btn btn-default' href='$product_url'>View Details</a>
 
                                 <a class='btn btn-primary' href='cart.php?product_id=$product_id'><i class='fa fa-shopping-cart'></i> Add to Cart</a>
 
@@ -215,6 +277,8 @@
                 $product_id = $row_products['product_id'];
             
                 $product_title = $row_products['product_title'];
+
+                $product_url = $row_products['product_url'];
             
                 $product_price = $row_products['product_price'];
                 
@@ -228,7 +292,7 @@
 
                     <div class='product'>
 
-                        <a href='details.php?product_id=$product_id'>
+                        <a href='$product_url'>
 
                             <img class='img-responsive' src='images/Product-Images/$product_img1'>
 
@@ -236,11 +300,11 @@
 
                         <div class='text'>
 
-                            <h3><a href='details.php?product_id=$product_id'>$product_title</a></h3>
+                            <h3><a href='$product_url'>$product_title</a></h3>
 
                             <p class='price'>$ $product_price</p>
 
-                            <p class='button'><a class='btn btn-default' href='details.php?product_id=$product_id'>View Details</a>
+                            <p class='button'><a class='btn btn-default' href='$product_url'>View Details</a>
 
                                 <a class='btn btn-primary' href='cart.php?product_id=$product_id'><i class='fa fa-shopping-cart'></i> Add to Cart</a>
 
@@ -258,5 +322,77 @@
         
         
     }// Finish side bar get production by type function //
+
+
+    //Begin, Search function
+
+    function searchPro()
+    {
+        global $con;
+
+        if(isset($_GET["search"])){
+
+            $search_wd = $_GET["search"];
+
+            $sql="SELECT * FROM product WHERE product_keyword LIKE '%$search_wd%'";
+
+            $results= mysqli_query($con,$sql);
+
+            if(mysqli_num_rows($results) > 0){
+
+                while($row_products = mysqli_fetch_array($results)){
+
+                    $product_id = $row_products['product_id'];
+                
+                    $product_title = $row_products['product_title'];
+
+                    $product_url = $row_products['product_url'];
+                
+                    $product_price = $row_products['product_price'];
+                
+                    $product_img1 = $row_products['product_image1'];
+                    
+                    echo "
+                
+                    <div class='col-md-4 col-sm-6 center-responsive'>
+
+                        <div class='product'>
+
+                            <a href='$product_url'>
+
+                                <img class='img-responsive' src='images/Product-Images/$product_img1'>
+
+                            </a>
+
+                            <div class='text'>
+
+                                <h3><a href='$product_url'>$product_title</a></h3>
+
+                                <p class='price'>$ $product_price</p>
+
+                                <p class='button'><a class='btn btn-default' href='$product_url'>View Details</a>
+
+                                    <a class='btn btn-primary' href='cart.php?product_id=$product_id'><i class='fa fa-shopping-cart'></i> Add to Cart</a>
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    ";    
+                }
+            }else{
+
+                echo "<script>alert('No Result')</script>";
+
+                echo "<script>window.open('shop.php','_self')</script>";
+
+            }
+        }
+    }//FInish, Search function
+
     
 ?>

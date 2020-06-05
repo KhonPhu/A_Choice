@@ -2,6 +2,21 @@
 
     <div class="panel-heading"><!-- panel-heading Begin -->
 
+        <h3 class="panel-title"><strong>By Price</strong></h3>
+
+    </div><!-- panel-heading Finish -->
+
+    <div class="panel-body"><!-- panel-body Begin -->
+
+        <div align="center">  
+            <input type="range" min="1" max="100" step="5" value="1" id="min_price" name="min_price" />  
+            <span id="price_range"></span>  
+        </div>  
+
+    </div><!-- panel-body Finish -->
+
+    <div class="panel-heading"><!-- panel-heading Begin -->
+
         <h3 class="panel-title"><strong>By Device</strong></h3>
     
     </div><!-- panel-heading Finish -->

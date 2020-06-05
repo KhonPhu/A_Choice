@@ -32,7 +32,7 @@
                     <div class="col-md-12"><!-- col-md-12 Begin -->
 
                         <center><!-- center Begin -->
-                           
+
                            <h2> Feel free to Contact Us</h2>
                            
                            <p class="text-muted"><!-- text-muted Begin -->
@@ -41,7 +41,7 @@
                                
                            </p><!-- text-muted Finish -->
                            
-                       </center><!-- center Finish -->
+                        <center><!-- center Begin -->
                 
                     </div><!-- col-md-12 Finish -->
 
