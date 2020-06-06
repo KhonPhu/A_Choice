@@ -135,14 +135,33 @@
                            <div class="form-group">
                                     <label class="col-md-5 control-label">Share Product</label>
 
-                                    <div class="col-md-7">
-                                        <p class="social">
-                                            <a href="#" class="fa fa-facebook"></a>
-                                            <a href="#" class="fa fa-twitter"></a>
-                                            <a href="#" class="fa fa-instagram"></a>
-                                            <a href="#" class="fa fa-google-plus"></a>
-                                        </p>
+                                    <!-- Load Facebook SDK for JavaScript -->
+                                  <div id="fb-root"></div>
+                                      <script>(function(d, s, id) {
+                                        var js, fjs = d.getElementsByTagName(s)[0];
+                                        if (d.getElementById(id)) return;
+                                        js = d.createElement(s); js.id = id;
+                                        js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+                                        fjs.parentNode.insertBefore(js, fjs);
+                                      }(document, 'script', 'facebook-jssdk'));</script>
+                                    
+                                
+                                <div class="col-md-7">
+                                  
+                                    <!-- Your twitter share button code -->
+                                    
+                                    <a href="https://twitter.com/share?hashtags=https://a-choice.000webhostapp.com/Genuine-Sony-Xperia-Z1-Charging-Dock-DK31" class="twitter-share-button" data-size="large" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                    
+                                    <!-- Your facebook share button code -->
+                                    <div class="fb-share-button"
+                                        data-href="https://a-choice.000webhostapp.com/Genuine-Sony-Xperia-Z1-Charging-Dock-DK31" 
+                                        data-layout="button" 
+                                        data-size="large">
                                     </div>
+                                  
+                                </div>
+
+                            </div>
                                 </div>
 
                                <div class="form-group">

@@ -57,6 +57,21 @@ if(isset($_GET['product_id'])){
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="js/index.js"></script>
     <link rel="icon" href="images/favicon.ico" type="image/ico">
+
+    <!-- Facebook -->
+    <meta property="og:url"           content="https://a-choice.000webhostapp.com/" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="A Choice" />
+    <meta property="og:description"   content="Sharing" />
+    <meta property="og:image"         content="https://a-choice.000webhostapp.com/images/Product-Images/Genuine_Sony_Xperia_Z1_Charging_Dock_DK31_1.jpg" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://a-choice.000webhostapp.com/">
+    <meta name="twitter:title" content="A Choice">
+    <meta name="twitter:description" content="Sharing">
+    <meta name="twitter:image" content="https://a-choice.000webhostapp.com/Genuine_Sony_Xperia_Z3_Charging_Dock_DK48_1.jpg">   
+
 </head>
 
 <header>
